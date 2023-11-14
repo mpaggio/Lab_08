@@ -4,6 +4,8 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
+
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -29,20 +31,26 @@ public class MiniGUI {
      */
     public MiniGUI() {
         final JPanel canvas = new JPanel();
-        final JPanel newCanvas = new JPanel();
         canvas.setLayout(new BorderLayout());
-        newCanvas.setLayout(new BoxLayout(newCanvas, BoxLayout.LINE_AXIS));
+        final JTextField textField = new JTextField("Result");
         final JButton write = new JButton("Print a random number on standard output");
-        newCanvas.add(write, BorderLayout.CENTER);
+        
+        final JPanel newCanvas = new JPanel();
+        newCanvas.setLayout(new BoxLayout(newCanvas, BoxLayout.LINE_AXIS));
+        newCanvas.add(write);
+        newCanvas.add(textField, BorderLayout.NORTH);
         frame.setContentPane(newCanvas);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
         /*
          * Handlers
          */
         write.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(final ActionEvent e) {
-                System.out.println(randomGenerator.nextInt());
+                final int randomNumber = randomGenerator.nextInt();
+                System.out.println(randomNumber);
+                textField.setText("Result: " + Integer.toString(randomNumber));
             }
         });
     }
