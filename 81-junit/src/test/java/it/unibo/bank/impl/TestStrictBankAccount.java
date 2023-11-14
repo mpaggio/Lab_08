@@ -58,7 +58,7 @@ public class TestStrictBankAccount {
     public void testNegativeWithdraw() {
         try{
             this.bankAccount.withdraw(this.mRossi.getUserID(), -10);
-            Assertions.fail();
+            Assertions.fail("Withdraw must fail beacause of insertion of a negative amount to withdraw");
         } catch(IllegalArgumentException e) {
             assertEquals("Cannot withdraw a negative amount", e.getMessage());
             assertEquals(0.0, this.bankAccount.getBalance());
@@ -74,7 +74,7 @@ public class TestStrictBankAccount {
     public void testWithdrawingTooMuch() {
         try{
             this.bankAccount.withdraw(this.mRossi.getUserID(), this.bankAccount.getBalance() + 1);
-            Assertions.fail();
+            Assertions.fail("Withdraw must fail beacuse of insertion of an amount of money that is too much for the registered balance");
         } catch(IllegalArgumentException e) {
             assertEquals("Insufficient balance", e.getMessage());
             assertEquals(0.0, this.bankAccount.getBalance());
