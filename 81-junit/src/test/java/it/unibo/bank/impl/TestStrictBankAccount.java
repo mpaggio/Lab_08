@@ -5,6 +5,9 @@ import it.unibo.bank.api.BankAccount;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import static it.unibo.bank.impl.SimpleBankAccount.MANAGEMENT_FEE;
+import static it.unibo.bank.impl.StrictBankAccount.TRANSACTION_FEE;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Assertions;
 
@@ -22,7 +25,7 @@ public class TestStrictBankAccount {
     @BeforeEach
     public void setUp() {
         this.mRossi = new AccountHolder("Mario", "Rossi", 1);
-        this.bankAccount = new StrictBankAccount(mRossi, INITIAL_AMOUNT);
+        this.bankAccount = new StrictBankAccount(mRossi, 0.0);
     }
 
     /**
@@ -30,7 +33,7 @@ public class TestStrictBankAccount {
      */
     @Test
     public void testInitialization() {
-        assertEquals(100, bankAccount.getBalance());
+        assertEquals(0.0, bankAccount.getBalance());
         assertEquals(0, bankAccount.getTransactionsCount());
         assertEquals(mRossi, bankAccount.getAccountHolder());
     }
@@ -40,10 +43,11 @@ public class TestStrictBankAccount {
      */
     @Test
     public void testManagementFees() {
-        final double amount = 100;
-        this.bankAccount.deposit(this.mRossi.getUserID(), amount);
+        this.bankAccount.deposit(this.mRossi.getUserID(), INITIAL_AMOUNT);
+        assertEquals(INITIAL_AMOUNT, this.bankAccount.getBalance());
+        assertEquals(1, this.bankAccount.getTransactionsCount());
         this.bankAccount.chargeManagementFees(this.mRossi.getUserID());
-        assertEquals(194.9, this.bankAccount.getBalance());
+        assertEquals(INITIAL_AMOUNT - (MANAGEMENT_FEE + TRANSACTION_FEE), this.bankAccount.getBalance());
         assertEquals(0, this.bankAccount.getTransactionsCount());
     }
 
@@ -57,6 +61,8 @@ public class TestStrictBankAccount {
             Assertions.fail();
         } catch(IllegalArgumentException e) {
             assertEquals("Cannot withdraw a negative amount", e.getMessage());
+            assertEquals(0.0, this.bankAccount.getBalance());
+            assertEquals(0,this.bankAccount.getTransactionsCount());
         }
         
     }
@@ -71,6 +77,9 @@ public class TestStrictBankAccount {
             Assertions.fail();
         } catch(IllegalArgumentException e) {
             assertEquals("Insufficient balance", e.getMessage());
+            assertEquals(0.0, this.bankAccount.getBalance());
+            assertEquals(0,this.bankAccount.getTransactionsCount());
+
         }
     }
 }
