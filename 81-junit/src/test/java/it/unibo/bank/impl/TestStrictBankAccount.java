@@ -6,7 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
+import org.junit.jupiter.api.Assertions;
 
 public class TestStrictBankAccount {
 
@@ -43,8 +43,8 @@ public class TestStrictBankAccount {
         final double amount = 100;
         this.bankAccount.deposit(this.mRossi.getUserID(), amount);
         this.bankAccount.chargeManagementFees(this.mRossi.getUserID());
-        assertEquals(194.9, bankAccount.getBalance());
-        assertEquals(0,bankAccount.getTransactionsCount());
+        assertEquals(194.9, this.bankAccount.getBalance());
+        assertEquals(0, this.bankAccount.getTransactionsCount());
     }
 
     /**
@@ -52,7 +52,13 @@ public class TestStrictBankAccount {
      */
     @Test
     public void testNegativeWithdraw() {
-        fail("To be implemented");
+        try{
+            this.bankAccount.withdraw(this.mRossi.getUserID(), -10);
+            Assertions.fail();
+        } catch(IllegalArgumentException e) {
+            assertEquals("Cannot withdraw a negative amount", e.getMessage());
+        }
+        
     }
 
     /**
@@ -60,6 +66,11 @@ public class TestStrictBankAccount {
      */
     @Test
     public void testWithdrawingTooMuch() {
-        fail("To be implemented");
+        try{
+            this.bankAccount.withdraw(this.mRossi.getUserID(), this.bankAccount.getBalance() + 1);
+            Assertions.fail();
+        } catch(IllegalArgumentException e) {
+            assertEquals("Insufficient balance", e.getMessage());
+        }
     }
 }
