@@ -6,8 +6,7 @@ public class DeathNoteImpl implements DeathNote{
 
     @Override
     public String getRule(int ruleNumber) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getRule'");
+        throw new IllegalArgumentException("Invalid rule number");
     }
 
     @Override
@@ -18,14 +17,12 @@ public class DeathNoteImpl implements DeathNote{
 
     @Override
     public boolean writeDeathCause(String cause) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'writeDeathCause'");
+        throw new IllegalStateException("It's impossible to write a cause of death before writing a name");
     }
 
     @Override
     public boolean writeDetails(String details) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'writeDetails'");
+        throw new IllegalStateException("It's impossible to write a detail of death before writing a name");
     }
 
     @Override
