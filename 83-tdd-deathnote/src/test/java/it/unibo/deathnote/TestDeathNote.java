@@ -7,7 +7,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
@@ -65,13 +64,12 @@ class TestDeathNote {
             assertEquals("It's impossible to write a cause of death before writing a name", e.getMessage());
         }
         deathNote.writeName(MARCO_PAGGETTI);
-        assertNotEquals("Heart attack", deathNote.getDeathCause(MARCO_PAGGETTI));
-        assertNull(deathNote.getDeathCause(MARCO_PAGGETTI));
+        assertEquals("Heart attack", deathNote.getDeathCause(MARCO_PAGGETTI));
         deathNote.writeDeathCause("Heart attack");
         assertEquals("Heart attack", deathNote.getDeathCause(MARCO_PAGGETTI));
         deathNote.writeName(ANOTHER_HUMAN);
         assertTrue(deathNote.isNameWritten(ANOTHER_HUMAN));
-        deathNote.writeDeathCause("Karting accident");
+        assertTrue(deathNote.writeDeathCause("Karting accident"));
         assertEquals("Karting accident", deathNote.getDeathCause(ANOTHER_HUMAN));
         sleep(INVALID_TIME_FOR_CAUSES);
         assertFalse(deathNote.writeDeathCause("Hit by a car"));
@@ -87,7 +85,7 @@ class TestDeathNote {
         }
         deathNote.writeName(MARCO_PAGGETTI);
         assertNotEquals("Studied too much", deathNote.getDeathDetails(MARCO_PAGGETTI));
-        assertNull(deathNote.getDeathDetails(MARCO_PAGGETTI));
+        assertEquals("",deathNote.getDeathDetails(MARCO_PAGGETTI));
         assertTrue(deathNote.writeDetails("Ran for too long"));
         assertEquals("Ran for too long", deathNote.getDeathDetails(MARCO_PAGGETTI));
         deathNote.writeName(ANOTHER_HUMAN);
